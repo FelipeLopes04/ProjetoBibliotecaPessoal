@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<div class="topo">
+  <form method="get" class="busca">
+    <input type="text" name="busca" value="{{ busca }}" placeholder="Buscar por título ou autor">
+    <button type="submit">Buscar</button>
+    {% if busca %}<a href="{{ url_for('listar_livros') }}">Limpar</a>{% endif %}
+  </form>
+  <a class="botao" href="{{ url_for('cadastrar_livro') }}">+ Novo livro</a>
+</div>
+
+{% if livros %}
+<table>
+  <thead>
+    <tr><th>Título</th><th>Autor</th><th>Ano</th><th>Categoria</th><th>Status</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for livro in livros %}
+    <tr>
+      <td>{{ livro.titulo }}</td>
+      <td>{{ livro.autor }}</td>
+      <td>{{ livro.ano or "-" }}</td>
+      <td>{{ livro.categoria }}</td>
+      <td><span class="status">{{ livro.status }}</span></td>
+      <td class="acoes">
+        <a href="{{ url_for('editar_livro', id=livro.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('excluir_livro', id=livro.id) }}"
+              onsubmit="return confirm('Excluir este livro?')">
+          <button class="perigo">Excluir</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="vazio">Nenhum livro encontrado.</p>
+{% endif %}
+{% endblock %}

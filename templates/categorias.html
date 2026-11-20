@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<h2>Categorias</h2>
+
+<form method="post" class="busca">
+  <input type="text" name="nome" placeholder="Nome da nova categoria" required>
+  <button type="submit">Adicionar</button>
+</form>
+
+<table>
+  <thead><tr><th>Nome</th><th>Livros</th><th></th></tr></thead>
+  <tbody>
+    {% for c in categorias %}
+    <tr>
+      <td>{{ c.nome }}</td>
+      <td>{{ c.qtd }}</td>
+      <td class="acoes">
+        <form method="post" action="{{ url_for('excluir_categoria', id=c.id) }}"
+              onsubmit="return confirm('Excluir esta categoria?')">
+          <button class="perigo">Excluir</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

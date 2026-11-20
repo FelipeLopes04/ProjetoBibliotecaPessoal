@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<h2>{{ "Editar livro" if livro else "Novo livro" }}</h2>
+
+<form method="post" class="formulario">
+  <label>Título *
+    <input type="text" name="titulo" value="{{ livro.titulo if livro else '' }}" required>
+  </label>
+  <label>Autor *
+    <input type="text" name="autor" value="{{ livro.autor if livro else '' }}" required>
+  </label>
+  <label>Ano de publicação
+    <input type="number" name="ano" value="{{ livro.ano if livro and livro.ano else '' }}">
+  </label>
+  <label>Categoria *
+    <select name="categoria_id" required>
+      {% for c in categorias %}
+        <option value="{{ c.id }}" {% if livro and livro.categoria_id == c.id %}selected{% endif %}>{{ c.nome }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Status
+    <select name="status">
+      {% for s in status %}
+        <option {% if livro and livro.status == s %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <div class="linha">
+    <button type="submit">Salvar</button>
+    <a href="{{ url_for('listar_livros') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}
